@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LMS Portal</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: "Inter", sans-serif;
+}
+
+header{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+
+}
+.signup-page {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #f3f4f6;
+}
+.signup-page > img {
+  width: 190px;
+  margin-bottom: 25px;
+}
+.form {
+  background-color: #ffffff;
+  color: rgb(71, 70, 70);
+  width: 30%;
+  padding: 22px;
+  border-radius: 7px;
+  box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
+}
+input,
+select {
+  font-size: 16px;
+  padding: 10px;
+  background-color: #e8f0fe;
+  border-radius: 7px;
+  border: none;
+  width: 100%;
+  margin: 6px 0 20px 0;
+  border: 0.5px solid rgb(193, 190, 190);
+}
+#remember {
+  width: 20px;
+}
+#registered {
+  text-decoration: underline;
+}
+button {
+  padding: 9px 18px;
+  border-radius: 7px;
+  border: none;
+  background-color: #1f2937;
+  color: white;
+  font-weight: 600;
+}
+form > div {
+  width: 100%;
+  text-align: center;
+  margin-top: 25px;
+}
+form > div > span {
+  margin-right: 10px;
+}
+a {
+  text-decoration: none;
+}
+
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="heading">
+        <h1>SAHE</h1>
+        <h2>IT Department</h2>
+      </div>
+    </header>
+    <div class="signup-page">
+      <img src="https://www.masaischool.com/img/navbar/logo.svg" alt="" />
+      <form class="form">
+        <label for="email">Enter Roll No or Email</label><br />
+        <input type="email" id="email" /><br />
+        <label for="password">Password</label><br />
+        <input
+          type="password"
+          id="password"
+          placeholder="Min 8 characters"
+        /><br />
+        <label for="user-type">Select user</label><br />
+        <select id="user">
+          <option value="student">Student</option>
+          <option value="admin">Admin</option></select
+        ><br />
+        <button class="signup" onclick="signupUser()">SIGN UP</button>
+        <div>
+          <span id="registered">forget password?</span
+          ><a href="./index.html">click here.</a>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>
+<script>
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+class user {
+  constructor() {}
+  validatePass(userpass) {
+    let value = userpass.length < 8 ? false : true;
+    return value;
+  }
+  signup(useremail, userpass, usertype) {
+    let validated = false;
+    validated = this.validatePass(userpass);
+    if (validated) {
+      this.email = useremail;
+      this.pass = userpass;
+      this.usertype = usertype;
+      users.push(this);
+      localStorage.setItem("users", JSON.stringify(users));
+      localStorage.setItem("currentUser", JSON.stringify(useremail));
+      localStorage.setItem("currentType", JSON.stringify(usertype));
+      if (usertype == "student") {
+        window.location = "user.html";
+      } else {
+        window.location = "admin.html";
+      }
+    } else {
+      alert("Please fill correct details");
+    }
+  }
+}
+//   console.log(users);
+function signupUser() {
+  event.preventDefault();
+  let useremail = document.getElementById("email").value;
+  let userpass = document.getElementById("password").value;
+  let usertype = document.getElementById("user").value;
+  let User = new user();
+  User.signup(useremail, userpass, usertype);
+}
+
+</script>
